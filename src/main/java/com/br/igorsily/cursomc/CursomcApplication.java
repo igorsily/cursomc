@@ -8,8 +8,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.br.igorsily.cursomc.model.categoria.Categoria;
+import com.br.igorsily.cursomc.model.cidade.Cidade;
+import com.br.igorsily.cursomc.model.estado.Estado;
 import com.br.igorsily.cursomc.model.produto.Produto;
 import com.br.igorsily.cursomc.repository.categoria.CategoriaRepository;
+import com.br.igorsily.cursomc.repository.cidade.CidadeRepository;
+import com.br.igorsily.cursomc.repository.estado.EstadoRepository;
 import com.br.igorsily.cursomc.repository.produto.ProdutoRepository;
 
 @SpringBootApplication
@@ -20,6 +24,12 @@ public class CursomcApplication implements CommandLineRunner {
 
 	@Autowired
 	private ProdutoRepository produtoRepository;
+
+	@Autowired
+	private CidadeRepository cidadeRepository;
+
+	@Autowired
+	private EstadoRepository estadoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -42,9 +52,13 @@ public class CursomcApplication implements CommandLineRunner {
 		produto2.setCategorias(Arrays.asList(categoria, categoria2));
 		produto3.setCategorias(Arrays.asList(categoria));
 
+		Estado estado = new Estado(null, "Minas Gerais");
+		Cidade cidade = new Cidade(null, "Uberlândia", estado);
+
 		categoriaRepository.saveAll(Arrays.asList(categoria, categoria2));
 		produtoRepository.saveAll(Arrays.asList(produto, produto2, produto3));
-		
+		estadoRepository.save(estado);
+		cidadeRepository.save(cidade);
 	}
 
 }
