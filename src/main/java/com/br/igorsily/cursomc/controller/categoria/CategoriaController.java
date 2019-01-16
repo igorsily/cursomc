@@ -1,4 +1,4 @@
-package com.br.igorsily.cursomc.controllers;
+package com.br.igorsily.cursomc.controller.categoria;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.br.igorsily.cursomc.model.Categoria;
+import com.br.igorsily.cursomc.model.categoria.Categoria;
 
 @RestController
 @RequestMapping(value = "categorias")

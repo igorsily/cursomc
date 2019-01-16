@@ -1,4 +1,4 @@
-package com.br.igorsily.cursomc.model;
+package com.br.igorsily.cursomc.model.categoria;
 
 import java.io.Serializable;
 
