@@ -1,30 +1,29 @@
 package com.br.igorsily.cursomc.controller.categoria;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.br.igorsily.cursomc.model.categoria.Categoria;
+import com.br.igorsily.cursomc.service.categoria.CategoriaService;
 
 @RestController
 @RequestMapping(value = "categorias")
 public class CategoriaController {
-	
-	@RequestMapping(method = RequestMethod.GET)
-	public List<Categoria> listar() {
-		
-		Categoria c1 = new Categoria(1, "Informática");
-		Categoria c2 = new Categoria(2, "Escritório");
-		
-		List<Categoria> lista = new ArrayList<Categoria>();
-		
-		lista.add(c1);
-		lista.add(c2);
-		
-		return lista;
+
+	@Autowired
+	private CategoriaService categoriaService;
+
+	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
+	public ResponseEntity<?> findById(@PathVariable Integer id) {
+
+		Categoria obj = categoriaService.findById(id);
+
+		return new ResponseEntity<>(obj, HttpStatus.OK);
 	}
 
 }
