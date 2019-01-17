@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 
 import com.br.igorsily.cursomc.model.cidade.Cidade;
 import com.br.igorsily.cursomc.model.cliente.Cliente;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class Endereco implements Serializable {
@@ -28,6 +29,7 @@ public class Endereco implements Serializable {
 	private String cep;
 
 	@ManyToOne
+	@JsonBackReference
 	@JoinColumn(name = "cliente")
 	private Cliente cliente;
 
