@@ -6,14 +6,17 @@ import javax.persistence.Entity;
 
 import com.br.igorsily.cursomc.model.enums.EstadoPagamento;
 import com.br.igorsily.cursomc.model.pedido.Pedido;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 public class PagamentoBoleto extends Pagamento {
 
 	private static final long serialVersionUID = 1L;
 
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date dataVencimento;
-
+	
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date dataPagamento;
 
 	public PagamentoBoleto() {

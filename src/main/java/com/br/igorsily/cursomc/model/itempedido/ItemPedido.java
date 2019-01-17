@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 
 import com.br.igorsily.cursomc.model.pedido.Pedido;
 import com.br.igorsily.cursomc.model.produto.Produto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class ItemPedido implements Serializable {
@@ -14,6 +15,7 @@ public class ItemPedido implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
+	@JsonIgnore
 	private ItemPedidoPk id = new ItemPedidoPk();
 
 	private Double desconto;
@@ -56,6 +58,7 @@ public class ItemPedido implements Serializable {
 		this.preco = preco;
 	}
 
+	@JsonIgnore
 	public Pedido getPedido() {
 
 		return this.id.getPedido();

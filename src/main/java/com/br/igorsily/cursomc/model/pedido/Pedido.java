@@ -19,6 +19,8 @@ import com.br.igorsily.cursomc.model.cliente.Cliente;
 import com.br.igorsily.cursomc.model.endereco.Endereco;
 import com.br.igorsily.cursomc.model.itempedido.ItemPedido;
 import com.br.igorsily.cursomc.model.pagamento.Pagamento;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Pedido implements Serializable {
@@ -28,13 +30,16 @@ public class Pedido implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-
+	
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private Date instante;
 
+	@JsonManagedReference
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")
 	private Pagamento pagamento;
 
 	@ManyToOne
+	@JsonManagedReference
 	@JoinColumn(name = "cliente")
 	private Cliente cliente;
 
@@ -44,7 +49,7 @@ public class Pedido implements Serializable {
 
 	@OneToMany(mappedBy = "id.pedido")
 	private Set<ItemPedido> items = new HashSet<>();
-	
+
 	public Pedido() {
 	}
 
