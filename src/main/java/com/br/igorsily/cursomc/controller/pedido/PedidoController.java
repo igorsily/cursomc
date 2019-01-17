@@ -19,11 +19,11 @@ public class PedidoController {
 	private PedidoService pedidoService;
 
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
-	public ResponseEntity<?> findById(@PathVariable Integer id) {
+	public ResponseEntity<Pedido> findById(@PathVariable Integer id) {
 
-		Pedido obj = pedidoService.findById(id);
+		Pedido pedido = pedidoService.findById(id);
 
-		return new ResponseEntity<>(obj, HttpStatus.OK);
+		return new ResponseEntity<Pedido>(pedido, HttpStatus.OK);
 	}
 
 }

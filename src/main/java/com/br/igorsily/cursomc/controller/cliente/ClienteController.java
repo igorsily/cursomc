@@ -19,11 +19,11 @@ public class ClienteController {
 	private ClienteService clienteService;
 
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
-	public ResponseEntity<?> findById(@PathVariable Integer id) {
+	public ResponseEntity<Cliente> findById(@PathVariable Integer id) {
 
-		Cliente obj = clienteService.findById(id);
+		Cliente cliente = clienteService.findById(id);
 
-		return new ResponseEntity<>(obj, HttpStatus.OK);
+		return new ResponseEntity<Cliente>(cliente, HttpStatus.OK);
 	}
 
 

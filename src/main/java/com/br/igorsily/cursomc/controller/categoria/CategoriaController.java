@@ -3,6 +3,8 @@ package com.br.igorsily.cursomc.controller.categoria;
 import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,21 +24,38 @@ public class CategoriaController {
 	private CategoriaService categoriaService;
 
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
-	public ResponseEntity<?> findById(@PathVariable Integer id) {
+	public ResponseEntity<Categoria> findById(@PathVariable Integer id) {
 
 		Categoria categoria = categoriaService.findById(id);
 
-		return ResponseEntity.ok().body(categoria);
+		return new ResponseEntity<Categoria>(categoria,HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(@RequestBody Categoria categoria) {
+	public ResponseEntity<Void> save(@RequestBody Categoria categoria) {
 
-		categoria = categoriaService.insert(categoria);
+		categoria = categoriaService.save(categoria);
 
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(categoria.getId()).toUri();
-		return ResponseEntity.created(uri).build();
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(categoria.getId())
+				.toUri();
+		
+		HttpHeaders headers = new HttpHeaders();
+		
+		headers.setLocation(location);
+		
+		return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
 
+	}
+
+	@RequestMapping(method = RequestMethod.PUT, value = "/{id}")
+	public ResponseEntity<Void> edit(@PathVariable Integer id, @RequestBody Categoria categoria) {
+		
+		categoria.setId(id);
+		
+		categoria = categoriaService.update(categoria);
+		
+	
+		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 
 }
