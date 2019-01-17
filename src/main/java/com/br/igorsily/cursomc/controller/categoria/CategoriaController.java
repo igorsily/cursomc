@@ -1,6 +1,8 @@
 package com.br.igorsily.cursomc.controller.categoria;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.br.igorsily.cursomc.dto.CategoriaDTO;
 import com.br.igorsily.cursomc.model.categoria.Categoria;
 import com.br.igorsily.cursomc.service.categoria.CategoriaService;
 
@@ -22,7 +25,18 @@ public class CategoriaController {
 
 	@Autowired
 	private CategoriaService categoriaService;
-
+	
+	
+	@RequestMapping(method = RequestMethod.GET)
+	public ResponseEntity<List<CategoriaDTO>> findAll(){
+		
+		List<Categoria> categorias = categoriaService.findAll();
+		
+		List<CategoriaDTO> categoriasDto = categorias.stream().map( categoria -> new CategoriaDTO( categoria)).collect(Collectors.toList());
+		
+		return new ResponseEntity<List<CategoriaDTO>>(categoriasDto, HttpStatus.OK);
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
 	public ResponseEntity<Categoria> findById(@PathVariable Integer id) {
 
