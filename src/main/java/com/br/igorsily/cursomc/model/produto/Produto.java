@@ -18,7 +18,6 @@ import javax.persistence.OneToMany;
 import com.br.igorsily.cursomc.model.categoria.Categoria;
 import com.br.igorsily.cursomc.model.itempedido.ItemPedido;
 import com.br.igorsily.cursomc.model.pedido.Pedido;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -34,7 +33,7 @@ public class Produto implements Serializable {
 
 	private Double preco;
 
-	@JsonBackReference
+	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "PRODUTO_CATEGORIA", joinColumns = @JoinColumn(name = "produto"), inverseJoinColumns = @JoinColumn(name = "categoria"))
 	private List<Categoria> categorias = new ArrayList<>();

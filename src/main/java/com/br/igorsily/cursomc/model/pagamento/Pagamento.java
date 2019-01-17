@@ -3,7 +3,6 @@ package com.br.igorsily.cursomc.model.pagamento;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
-import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -13,7 +12,7 @@ import javax.persistence.OneToOne;
 
 import com.br.igorsily.cursomc.model.enums.EstadoPagamento;
 import com.br.igorsily.cursomc.model.pedido.Pedido;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -28,7 +27,7 @@ public abstract class Pagamento implements Serializable {
 
 	@OneToOne
 	@MapsId
-	@JsonBackReference
+	@JsonIgnore
 	@JoinColumn(name = "pedido")
 	private Pedido pedido;
 
