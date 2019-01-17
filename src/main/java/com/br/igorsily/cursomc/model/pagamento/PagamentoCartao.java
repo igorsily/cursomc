@@ -1,4 +1,4 @@
-package com.br.igorsily.cursomc.model.Pagamento;
+package com.br.igorsily.cursomc.model.pagamento;
 
 import javax.persistence.Entity;
 

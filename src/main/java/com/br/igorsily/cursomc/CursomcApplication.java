@@ -8,8 +8,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.br.igorsily.cursomc.model.Pagamento.Pagamento;
-import com.br.igorsily.cursomc.model.Pagamento.PagamentoCartao;
+import com.br.igorsily.cursomc.model.pagamento.Pagamento;
+import com.br.igorsily.cursomc.model.pagamento.PagamentoCartao;
 import com.br.igorsily.cursomc.model.categoria.Categoria;
 import com.br.igorsily.cursomc.model.cidade.Cidade;
 import com.br.igorsily.cursomc.model.cliente.Cliente;
