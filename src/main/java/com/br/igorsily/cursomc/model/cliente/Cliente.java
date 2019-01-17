@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 
 import com.br.igorsily.cursomc.model.endereco.Endereco;
 import com.br.igorsily.cursomc.model.enums.TipoCliente;
+import com.br.igorsily.cursomc.model.pedido.Pedido;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -39,6 +40,9 @@ public class Cliente implements Serializable {
 	@ElementCollection
 	@CollectionTable(name = "TELEFONE")
 	private Set<String> telefone = new HashSet<>();
+	
+	@OneToMany(mappedBy="cliente")
+	private List<Pedido> pedidos = new ArrayList<>();
 
 	public Cliente() {
 		// TODO Auto-generated constructor stub
@@ -108,6 +112,14 @@ public class Cliente implements Serializable {
 
 	public void setTelefone(Set<String> telefone) {
 		this.telefone = telefone;
+	}
+
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
 	}
 
 	@Override
