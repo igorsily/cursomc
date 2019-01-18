@@ -4,18 +4,42 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
+import com.br.igorsily.cursomc.service.validation.Cliente;
+
+@Cliente
 public class NewClienteDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
+	
+	@NotEmpty(message = "Preenchimeno obrigatório")
+	@Size(min = 3, max = 120, message = "O tamanho deve ser entre 3 e 120 caracteres")
 	private String nome;
+	
+	@NotEmpty(message = "Preenchimeno obrigatório")
+	@Email(message = "E-mail inválido")
 	private String email;
+	
+	@NotEmpty(message = "Preenchimeno obrigatório")
 	private String cpfOuCnpj;
+	
 	private Integer tipoCliente;
+	
+	@NotEmpty(message = "Preenchimeno obrigatório")
 	private String logradouro;
+	
+	@NotEmpty(message = "Preenchimeno obrigatório")
 	private String numero;
+	
 	private String complemento;
+	
+	@NotEmpty(message = "Preenchimeno obrigatório")
 	private String bairro;
+	
+	@NotEmpty(message = "Preenchimeno obrigatório")
 	private String cep;
 
 	private List<String> telefones = new ArrayList<String>();
