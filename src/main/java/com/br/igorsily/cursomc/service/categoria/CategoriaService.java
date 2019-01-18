@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.br.igorsily.cursomc.dto.CategoriaDTO;
 import com.br.igorsily.cursomc.model.categoria.Categoria;
 import com.br.igorsily.cursomc.repository.categoria.CategoriaRepository;
 import com.br.igorsily.cursomc.service.exception.DataIntegrityException;
@@ -41,15 +42,19 @@ public class CategoriaService {
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
 	}
 
-	public Categoria save(Categoria categoria) {
+	public Categoria save(CategoriaDTO categoriaDto) {
+
+		Categoria categoria = new Categoria(categoriaDto.getId(), categoriaDto.getNome());
 
 		return categoriaRepository.save(categoria);
 
 	}
 
-	public Categoria update(Categoria categoria) {
+	public Categoria update(CategoriaDTO categoriaDto) {
 
-		findById(categoria.getId());
+		Categoria categoria = findById(categoriaDto.getId());
+
+		categoria.setNome(categoriaDto.getNome());
 
 		return categoriaRepository.save(categoria);
 	}
