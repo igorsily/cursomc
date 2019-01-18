@@ -27,7 +27,7 @@ public class Cliente implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	private String nome;
 	private String email;
 	private String cpfOuCnpj;
@@ -39,9 +39,9 @@ public class Cliente implements Serializable {
 	@ElementCollection
 	@CollectionTable(name = "TELEFONE")
 	private Set<String> telefone = new HashSet<>();
-	
+
 	@JsonIgnore
-	@OneToMany(mappedBy="cliente")
+	@OneToMany(mappedBy = "cliente")
 	private List<Pedido> pedidos = new ArrayList<>();
 
 	public Cliente() {
@@ -54,7 +54,7 @@ public class Cliente implements Serializable {
 		this.nome = nome;
 		this.email = email;
 		this.cpfOuCnpj = cpfOuCnpj;
-		this.tipoCliente = tipoCliente.getCod();
+		this.tipoCliente = (tipoCliente == null) ? null : tipoCliente.getCod();
 	}
 
 	public Integer getId() {
@@ -97,7 +97,6 @@ public class Cliente implements Serializable {
 		this.tipoCliente = tipoCliente.getCod();
 	}
 
-	
 	public List<Endereco> getEnderecos() {
 		return enderecos;
 	}
