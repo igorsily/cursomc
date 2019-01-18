@@ -4,13 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
-import com.br.igorsily.cursomc.service.validation.Cliente;
+import com.br.igorsily.cursomc.service.validation.ClienteSave;
 
-@Cliente
+@ClienteSave
 public class NewClienteDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -21,6 +22,7 @@ public class NewClienteDTO implements Serializable {
 	
 	@NotEmpty(message = "Preenchimeno obrigatório")
 	@Email(message = "E-mail inválido")
+	@Column(unique=true)
 	private String email;
 	
 	@NotEmpty(message = "Preenchimeno obrigatório")

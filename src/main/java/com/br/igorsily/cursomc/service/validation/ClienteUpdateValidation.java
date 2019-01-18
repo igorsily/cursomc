@@ -2,47 +2,49 @@ package com.br.igorsily.cursomc.service.validation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.HandlerMapping;
 
 import com.br.igorsily.cursomc.controller.exception.FieldMessage;
+import com.br.igorsily.cursomc.dto.ClienteDTO;
 import com.br.igorsily.cursomc.dto.NewClienteDTO;
+import com.br.igorsily.cursomc.model.cliente.Cliente;
 import com.br.igorsily.cursomc.model.enums.TipoCliente;
 import com.br.igorsily.cursomc.repository.cliente.ClienteRepository;
 import com.br.igorsily.cursomc.service.validation.utils.BR;
 
-public class ClienteSaveValidation implements ConstraintValidator<ClienteSave, NewClienteDTO> {
-	
+public class ClienteUpdateValidation implements ConstraintValidator<ClienteUpdate, ClienteDTO> {
+
 	@Autowired
 	private ClienteRepository clienteRepository;
 
+	@Autowired
+	private HttpServletRequest request;
+
 	@Override
-	public void initialize(ClienteSave ann) {
+	public void initialize(ClienteUpdate ann) {
 	}
 
 	@Override
-	public boolean isValid(NewClienteDTO newClienteDto, ConstraintValidatorContext context) {
+	public boolean isValid(ClienteDTO clienteDto, ConstraintValidatorContext context) {
 		List<FieldMessage> fieldMessages = new ArrayList<>();
 
-		if(clienteRepository.findByEmail(newClienteDto.getEmail()) != null) {
+		@SuppressWarnings("unchecked")
+		Map<String, String> map = (Map<String, String>) request
+				.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
+
+		Integer id = Integer.parseInt(map.get("id"));
+
+		Cliente cliente = clienteRepository.findByEmail(clienteDto.getEmail());
+
+		if (cliente != null && !cliente.getId().equals(id)) {
 			fieldMessages.add(new FieldMessage("email", "Email já cadastrado"));
-		}
-		
-		if (newClienteDto.getTipoCliente().equals(TipoCliente.PESSOAFISICA.getCod())
-				&& !BR.isValidCPF(newClienteDto.getCpfOuCnpj())) {
-
-			fieldMessages.add(new FieldMessage("cpfOuCnpj", "CPF Inválido"));
-
-		}
-
-		if (newClienteDto.getTipoCliente().equals(TipoCliente.PESSOAJURIDICA.getCod())
-				&& !BR.isValidCNPJ(newClienteDto.getCpfOuCnpj())) {
-
-			fieldMessages.add(new FieldMessage("cpfOuCnpj", "CNPJ Inválido"));
-
 		}
 
 		for (FieldMessage e : fieldMessages) {
