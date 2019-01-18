@@ -21,6 +21,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.br.igorsily.cursomc.dto.CategoriaDTO;
 import com.br.igorsily.cursomc.dto.ClienteDTO;
+import com.br.igorsily.cursomc.dto.NewClienteDTO;
 import com.br.igorsily.cursomc.model.cliente.Cliente;
 import com.br.igorsily.cursomc.service.cliente.ClienteService;
 
@@ -52,9 +53,9 @@ public class ClienteController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> save(@Valid @RequestBody ClienteDTO clienteDto) {
+	public ResponseEntity<Void> save(@Valid @RequestBody NewClienteDTO newClienteDto) {
 
-		Cliente cliente = clienteService.save(clienteDto);
+		Cliente cliente = clienteService.save(newClienteDto);
 
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(cliente.getId())
 				.toUri();
