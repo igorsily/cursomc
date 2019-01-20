@@ -71,6 +71,11 @@ public class ItemPedido implements Serializable {
 
 	}
 
+	public Double getSubTotal() {
+
+		return this.getQuantidade() * (this.getPreco() - this.getDesconto());
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
