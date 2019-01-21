@@ -14,6 +14,7 @@ import com.br.igorsily.cursomc.repository.itempedido.ItemPedidoRepository;
 import com.br.igorsily.cursomc.repository.pagamento.PagamentoRepository;
 import com.br.igorsily.cursomc.repository.pedido.PedidoRepository;
 import com.br.igorsily.cursomc.service.boleto.BoletoService;
+import com.br.igorsily.cursomc.service.cliente.ClienteService;
 import com.br.igorsily.cursomc.service.exception.ObjectNotFoundException;
 import com.br.igorsily.cursomc.service.produto.ProdutoService;
 
@@ -35,6 +36,9 @@ public class PedidoService {
 	@Autowired
 	private BoletoService boletoService;
 
+	@Autowired
+	private ClienteService clienteService;
+
 	public Pedido findById(Integer id) {
 
 		Optional<Pedido> obj = pedidoRepository.findById(id);
@@ -47,7 +51,7 @@ public class PedidoService {
 	public Pedido save(Pedido pedido) {
 
 		pedido.setInstante(new Date());
-
+		pedido.setCliente(clienteService.findById(pedido.getCliente().getId()));
 		pedido.getPagamento().setEstadoPagamento(EstadoPagamento.PENDENTE);
 		pedido.getPagamento().setPedido(pedido);
 
@@ -64,10 +68,13 @@ public class PedidoService {
 
 			itemPedido.setDesconto(0.0);
 			itemPedido.setPreco(produtoService.findById(itemPedido.getProduto().getId()).getPreco());
+			itemPedido.setPreco(itemPedido.getProduto().getPreco());
 			itemPedido.setPedido(pedido);
+
 		}
 
 		itemPedidoRepository.saveAll(pedido.getItems());
+		System.out.println(pedido);
 		return pedido;
 	}
 

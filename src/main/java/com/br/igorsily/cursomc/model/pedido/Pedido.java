@@ -1,8 +1,11 @@
 package com.br.igorsily.cursomc.model.pedido;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -143,4 +146,30 @@ public class Pedido implements Serializable {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+
+		NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("Pedido número: ");
+		stringBuilder.append(getId());
+		stringBuilder.append(", Instante: ");
+		stringBuilder.append(simpleDateFormat.format(getInstante()));
+		stringBuilder.append(", Cliente: ");
+		stringBuilder.append(getCliente().getNome());
+		stringBuilder.append(", Situação do pagamento: ");
+		stringBuilder.append(getPagamento().getEstadoPagamento().getDescricao());
+		stringBuilder.append("\nDetalhes:\n");
+
+		for (ItemPedido item : getItems()) {
+
+			stringBuilder.append(item.toString());
+
+		}
+
+		stringBuilder.append("Valor total: ");
+		stringBuilder.append(numberFormat.format(getValorTotal()));
+		return stringBuilder.toString();
+	}
 }

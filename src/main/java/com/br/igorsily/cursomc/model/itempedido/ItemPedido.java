@@ -1,6 +1,8 @@
 package com.br.igorsily.cursomc.model.itempedido;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -62,7 +64,7 @@ public class ItemPedido implements Serializable {
 	public Pedido getPedido() {
 		return id.getPedido();
 	}
-	
+
 	public void setPedido(Pedido pedido) {
 		id.setPedido(pedido);
 	}
@@ -103,6 +105,23 @@ public class ItemPedido implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+
+		NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+		StringBuilder stringBuilder = new StringBuilder();
+
+		stringBuilder.append(this.getProduto().getNome());
+		stringBuilder.append(", Qte: ");
+		stringBuilder.append(this.getQuantidade());
+		stringBuilder.append(", Preço unitário: ");
+		stringBuilder.append(numberFormat.format(this.getPreco()));
+		stringBuilder.append(", Subtotal: ");
+		stringBuilder.append(numberFormat.format(this.getSubTotal()));
+		stringBuilder.append("\n");
+		return stringBuilder.toString();
 	}
 
 }
