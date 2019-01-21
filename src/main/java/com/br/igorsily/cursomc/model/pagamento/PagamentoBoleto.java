@@ -7,8 +7,10 @@ import javax.persistence.Entity;
 import com.br.igorsily.cursomc.model.enums.EstadoPagamento;
 import com.br.igorsily.cursomc.model.pedido.Pedido;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @Entity
+@JsonTypeName("pagamentoBoleto")
 public class PagamentoBoleto extends Pagamento {
 
 	private static final long serialVersionUID = 1L;

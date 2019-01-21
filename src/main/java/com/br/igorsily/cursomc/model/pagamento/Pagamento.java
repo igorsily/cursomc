@@ -13,9 +13,11 @@ import javax.persistence.OneToOne;
 import com.br.igorsily.cursomc.model.enums.EstadoPagamento;
 import com.br.igorsily.cursomc.model.pedido.Pedido;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 public abstract class Pagamento implements Serializable {
 
 	private static final long serialVersionUID = 1L;
