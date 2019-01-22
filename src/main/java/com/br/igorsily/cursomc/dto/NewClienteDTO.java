@@ -43,6 +43,9 @@ public class NewClienteDTO implements Serializable {
 	
 	@NotEmpty(message = "Preenchimeno obrigatório")
 	private String cep;
+	
+	@NotEmpty(message = "Preenchimeno obrigatório")
+	private String senha;
 
 	private List<String> telefones = new ArrayList<String>();
 
@@ -53,7 +56,7 @@ public class NewClienteDTO implements Serializable {
 	}
 
 	public NewClienteDTO(String nome, String email, String cpfOuCnpj, Integer tipoCliente, String logradouro,
-			String numero, String complemento, String bairro, String cep, List<String> telefones, Integer cidade) {
+			String numero, String complemento, String bairro, String cep, List<String> telefones, Integer cidade, String senha) {
 		super();
 		this.nome = nome;
 		this.email = email;
@@ -66,6 +69,7 @@ public class NewClienteDTO implements Serializable {
 		this.cep = cep;
 		this.telefones = telefones;
 		this.cidade = cidade;
+		this.senha = senha;
 	}
 
 	public String getNome() {
@@ -154,6 +158,14 @@ public class NewClienteDTO implements Serializable {
 
 	public void setCidade(Integer cidade) {
 		this.cidade = cidade;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
 
 }
