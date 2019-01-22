@@ -113,13 +113,13 @@ public class ItemPedido implements Serializable {
 		NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 		StringBuilder stringBuilder = new StringBuilder();
 
-		stringBuilder.append(this.getProduto().getNome());
+		stringBuilder.append(this.id.getProduto().getNome());
 		stringBuilder.append(", Qte: ");
 		stringBuilder.append(this.getQuantidade());
 		stringBuilder.append(", Preço unitário: ");
-		stringBuilder.append(numberFormat.format(this.getPreco()));
+		stringBuilder.append(numberFormat.format(getPreco()));
 		stringBuilder.append(", Subtotal: ");
-		stringBuilder.append(numberFormat.format(this.getSubTotal()));
+		stringBuilder.append(numberFormat.format(getSubTotal()));
 		stringBuilder.append("\n");
 		return stringBuilder.toString();
 	}
