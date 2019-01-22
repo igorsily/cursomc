@@ -46,7 +46,6 @@ public abstract class AbstractEmailService implements EmailService {
 	}
 
 	protected String htmlFromTemplatePedido(Pedido pedido) {
-
 		Context context = new Context();
 		context.setVariable("pedido", pedido);
 		return templateEngine.process("email/confirmacaoPedido", context);
@@ -55,14 +54,12 @@ public abstract class AbstractEmailService implements EmailService {
 
 	@Override
 	public void sendOrderConfirmationHtmlEmail(Pedido pedido) {
-
 		try {
 			MimeMessage mm = prepareMimeMessagePedido(pedido);
 			sendHtmlEmail(mm);
 		} catch (MessagingException e) {
 			sendOrderConfirmationEmail(pedido);
 		}
-
 	}
 
 	protected MimeMessage prepareMimeMessagePedido(Pedido pedido) throws MessagingException {
@@ -75,7 +72,7 @@ public abstract class AbstractEmailService implements EmailService {
 		mmh.setSentDate(new Date(System.currentTimeMillis()));
 		mmh.setText(htmlFromTemplatePedido(pedido), true);
 		return mimeMessage;
-		
+
 	}
 
 }
