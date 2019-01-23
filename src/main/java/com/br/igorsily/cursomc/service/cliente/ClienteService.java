@@ -17,11 +17,15 @@ import com.br.igorsily.cursomc.dto.NewClienteDTO;
 import com.br.igorsily.cursomc.model.cidade.Cidade;
 import com.br.igorsily.cursomc.model.cliente.Cliente;
 import com.br.igorsily.cursomc.model.endereco.Endereco;
+import com.br.igorsily.cursomc.model.enums.Perfil;
 import com.br.igorsily.cursomc.model.enums.TipoCliente;
 import com.br.igorsily.cursomc.repository.cliente.ClienteRepository;
 import com.br.igorsily.cursomc.repository.endereco.EnderecoRepository;
+import com.br.igorsily.cursomc.security.UserSecurity;
+import com.br.igorsily.cursomc.service.exception.AuthorizationException;
 import com.br.igorsily.cursomc.service.exception.DataIntegrityException;
 import com.br.igorsily.cursomc.service.exception.ObjectNotFoundException;
+import com.br.igorsily.cursomc.service.security.UserService;
 
 @Service
 public class ClienteService {
@@ -48,8 +52,13 @@ public class ClienteService {
 
 	}
 
+	
 	public Cliente findById(Integer id) {
 
+		UserSecurity user = UserService.authenticated();
+		
+		if(user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) throw new AuthorizationException("Acesso negado");
+	
 		Optional<Cliente> Cliente = clienteRepository.findById(id);
 
 		return Cliente.orElseThrow(() -> new ObjectNotFoundException(
