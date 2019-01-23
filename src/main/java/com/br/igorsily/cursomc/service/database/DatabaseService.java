@@ -13,6 +13,7 @@ import com.br.igorsily.cursomc.model.cidade.Cidade;
 import com.br.igorsily.cursomc.model.cliente.Cliente;
 import com.br.igorsily.cursomc.model.endereco.Endereco;
 import com.br.igorsily.cursomc.model.enums.EstadoPagamento;
+import com.br.igorsily.cursomc.model.enums.Perfil;
 import com.br.igorsily.cursomc.model.enums.TipoCliente;
 import com.br.igorsily.cursomc.model.estado.Estado;
 import com.br.igorsily.cursomc.model.itempedido.ItemPedido;
@@ -52,7 +53,7 @@ public class DatabaseService {
 	private PagamentoRepository pagamentoRepository;
 	@Autowired
 	private ItemPedidoRepository itemPedido;
-	
+
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -119,22 +120,33 @@ public class DatabaseService {
 		estadoRepository.saveAll(Arrays.asList(est1, est2));
 		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
 
-		Cliente cli1 = new Cliente(null, "Igor Sily", "igorsily2@gmail.com", "36378912377", TipoCliente.PESSOAFISICA, bCryptPasswordEncoder.encode("12345"));
-
+		Cliente cli1 = new Cliente(null, "Igor Sily", "igorsily2@gmail.com", "36378912377", TipoCliente.PESSOAFISICA,
+				bCryptPasswordEncoder.encode("12345"));
+		Cliente cli2 = new Cliente(null, "admin", "igorsily1@gmail.com", "36378912377", TipoCliente.PESSOAFISICA,
+				bCryptPasswordEncoder.encode("12345"));
+		cli2.setPerfil(Perfil.ADMIN);
 		cli1.getTelefone().addAll(Arrays.asList("27363323", "93838393"));
+		cli2.getTelefone().addAll(Arrays.asList("27363323", "93838393"));
 
 		Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "38220834", cli1, c1);
 		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
+		
+		Endereco e3 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "38220834", cli2, c1);
+		Endereco e4 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli2, c2);
 
 		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
-
-		clienteRepository.saveAll(Arrays.asList(cli1));
+		cli2.getEnderecos().addAll(Arrays.asList(e3, e4));
+		
+		clienteRepository.saveAll(Arrays.asList(cli1, cli2));
 		enderecoRepository.saveAll(Arrays.asList(e1, e2));
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
 		Pedido ped1 = new Pedido(null, sdf.parse("30/09/2017 10:32"), cli1, e1);
 		Pedido ped2 = new Pedido(null, sdf.parse("10/10/2017 19:35"), cli1, e2);
+
+		Pedido ped3 = new Pedido(null, sdf.parse("30/09/2017 10:32"), cli2, e1);
+		Pedido ped4 = new Pedido(null, sdf.parse("10/10/2017 19:35"), cli2, e2);
 
 		Pagamento pagto1 = new PagamentoCartao(null, EstadoPagamento.QUITADO, ped1, 6);
 		ped1.setPagamento(pagto1);
@@ -144,6 +156,7 @@ public class DatabaseService {
 		ped2.setPagamento(pagto2);
 
 		cli1.getPedidos().addAll(Arrays.asList(ped1, ped2));
+		cli2.getPedidos().addAll(Arrays.asList(ped1, ped2));
 
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));

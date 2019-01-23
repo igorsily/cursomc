@@ -5,17 +5,21 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import com.br.igorsily.cursomc.model.endereco.Endereco;
+import com.br.igorsily.cursomc.model.enums.Perfil;
 import com.br.igorsily.cursomc.model.enums.TipoCliente;
 import com.br.igorsily.cursomc.model.pedido.Pedido;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -33,11 +37,11 @@ public class Cliente implements Serializable {
 	private String email;
 	private String cpfOuCnpj;
 	private Integer tipoCliente;
-	
+
 	@JsonIgnore
 	private String senha;
 
-	@OneToMany(mappedBy = "cliente", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
 	private List<Endereco> enderecos = new ArrayList<>();
 
 	@ElementCollection
@@ -48,8 +52,14 @@ public class Cliente implements Serializable {
 	@OneToMany(mappedBy = "cliente")
 	private List<Pedido> pedidos = new ArrayList<>();
 
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "PERFIS")
+	private Set<Integer> perfis = new HashSet<Integer>();
+
 	public Cliente() {
-		// TODO Auto-generated constructor stub
+
+		setPerfil(Perfil.CLIENTE);
+
 	}
 
 	public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipoCliente, String senha) {
@@ -60,6 +70,8 @@ public class Cliente implements Serializable {
 		this.cpfOuCnpj = cpfOuCnpj;
 		this.tipoCliente = (tipoCliente == null) ? null : tipoCliente.getCod();
 		this.senha = senha;
+		setPerfil(Perfil.CLIENTE);
+
 	}
 
 	public Integer getId() {
@@ -132,6 +144,15 @@ public class Cliente implements Serializable {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+
+	public Set<Perfil> getPerfil() {
+		return perfis.stream().map(perfil -> Perfil.toEnum(perfil)).collect(Collectors.toSet());
+	}
+
+	public void setPerfil(Perfil perfil) {
+
+		this.perfis.add(perfil.getCod());
 	}
 
 	@Override
