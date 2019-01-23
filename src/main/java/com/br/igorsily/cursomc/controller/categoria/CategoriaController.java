@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,6 +50,7 @@ public class CategoriaController {
 		return new ResponseEntity<Categoria>(categoria, HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> save(@Valid @RequestBody CategoriaDTO categoriaDto) {
 
@@ -64,7 +66,8 @@ public class CategoriaController {
 		return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
 
 	}
-
+	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.PUT, value = "/{id}")
 	public ResponseEntity<Void> edit(@PathVariable Integer id, @Valid @RequestBody CategoriaDTO categoriaDto) {
 
@@ -75,6 +78,7 @@ public class CategoriaController {
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
 
