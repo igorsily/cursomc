@@ -4,20 +4,28 @@ import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.br.igorsily.cursomc.model.cliente.Cliente;
 import com.br.igorsily.cursomc.model.enums.EstadoPagamento;
+import com.br.igorsily.cursomc.model.enums.Perfil;
 import com.br.igorsily.cursomc.model.itempedido.ItemPedido;
 import com.br.igorsily.cursomc.model.pagamento.PagamentoBoleto;
 import com.br.igorsily.cursomc.model.pedido.Pedido;
 import com.br.igorsily.cursomc.repository.itempedido.ItemPedidoRepository;
 import com.br.igorsily.cursomc.repository.pagamento.PagamentoRepository;
 import com.br.igorsily.cursomc.repository.pedido.PedidoRepository;
+import com.br.igorsily.cursomc.security.UserSecurity;
 import com.br.igorsily.cursomc.service.boleto.BoletoService;
 import com.br.igorsily.cursomc.service.cliente.ClienteService;
 import com.br.igorsily.cursomc.service.email.EmailService;
+import com.br.igorsily.cursomc.service.exception.AuthorizationException;
 import com.br.igorsily.cursomc.service.exception.ObjectNotFoundException;
 import com.br.igorsily.cursomc.service.produto.ProdutoService;
+import com.br.igorsily.cursomc.service.security.UserService;
 
 @Service
 public class PedidoService {
@@ -39,14 +47,15 @@ public class PedidoService {
 
 	@Autowired
 	private ClienteService clienteService;
-	
-	@Autowired EmailService emailService;
+
+	@Autowired
+	EmailService emailService;
 
 	public Pedido findById(Integer id) {
 
-		Optional<Pedido> obj = pedidoRepository.findById(id);
+		Optional<Pedido> pedido = pedidoRepository.findById(id);
 
-		return obj.orElseThrow(() -> new ObjectNotFoundException(
+		return pedido.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Pedido.class.getName()));
 
 	}
@@ -81,4 +90,13 @@ public class PedidoService {
 		return pedido;
 	}
 
+	public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+		UserSecurity user = UserService.authenticated();
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		Cliente cliente = clienteService.findById(user.getId());
+		return pedidoRepository.findByCliente(cliente, pageRequest);
+	}
 }
